@@ -22,19 +22,23 @@ export class OwnersService {
     return this.ownerRepository.save(newOwner);
   }
 
-  findAll() {
+  async findAll() {
     return this.ownerRepository.find();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.ownerRepository.findOneOrFail(id);
   }
 
-  update(id: number, updateOwnerInput: UpdateOwnerInput) {
-    return `This action updates a #${id} owner`;
+  async update(updateOwnerInput: UpdateOwnerInput) {
+    const owner = await this.ownerRepository.findOneOrFail(updateOwnerInput.id);
+    const updatedOwner = this.ownerRepository.merge(owner, updateOwnerInput);
+    return this.ownerRepository.save(updatedOwner);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} owner`;
+  async remove(id: number) {
+    const owner = await this.ownerRepository.findOneOrFail(id);
+    this.ownerRepository.remove(owner);
+    return owner;
   }
 }

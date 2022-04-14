@@ -8,6 +8,7 @@ import { OwnersService } from '../owners/owners.service';
 
 // ** Dto Imports **
 import { CreatePetInput } from './dto/create-pet.input';
+import { UpdatePetInput } from './dto/update-pet.input';
 
 // ** Entity Imports **
 import { Pet } from './entity/pet.entity';
@@ -30,6 +31,18 @@ export class PetsService {
 
   async findOne(id: number): Promise<Pet> {
     return this.petRepository.findOneOrFail(id); // SELECT * FROM pet WHERE id = id
+  }
+
+  async update(updatePetInput: UpdatePetInput): Promise<Pet> {
+    const pet = await this.petRepository.findOneOrFail(updatePetInput.id);
+    const updatedPet = this.petRepository.merge(pet, updatePetInput);
+    return this.petRepository.save(updatedPet);
+  }
+
+  async remove(id: number): Promise<Pet> {
+    const pet = await this.petRepository.findOneOrFail(id);
+    this.petRepository.remove(pet);
+    return pet;
   }
 
   getOwner(ownerId: number) {

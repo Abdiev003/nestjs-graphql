@@ -11,12 +11,12 @@ import { Owner } from './entities/owner.entity';
 import { CreateOwnerInput } from './dto/create-owner.input';
 import { UpdateOwnerInput } from './dto/update-owner.input';
 
-@Resolver(of => Owner)
+@Resolver((of) => Owner)
 export class OwnersResolver {
   constructor(private readonly ownersService: OwnersService) {}
 
   @Mutation(() => Owner)
-  createOwner(@Args('createOwnerInput') createOwnerInput: CreateOwnerInput) {    
+  createOwner(@Args('createOwnerInput') createOwnerInput: CreateOwnerInput) {
     return this.ownersService.create(createOwnerInput);
   }
 
@@ -32,7 +32,7 @@ export class OwnersResolver {
 
   @Mutation(() => Owner)
   updateOwner(@Args('updateOwnerInput') updateOwnerInput: UpdateOwnerInput) {
-    return this.ownersService.update(updateOwnerInput.id, updateOwnerInput);
+    return this.ownersService.update(updateOwnerInput);
   }
 
   @Mutation(() => Owner)
